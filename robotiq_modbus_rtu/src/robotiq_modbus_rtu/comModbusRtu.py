@@ -87,6 +87,12 @@ class communication:
       #Get status from the device
       response = self.client.read_holding_registers(0x07D0, numRegs, unit=0x0009)
 
+      # Sometime, None object return from read_holding_registers() 
+      # especially with Universal Robot ROS Driver's rs485 proxy
+      # So, we just ignore those response to avoid erroring.
+      if response is None:
+         return [0, 0, 0, 0, 0, 0]
+
       #Instantiate output as an empty list
       output = []
 
